@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ MIT License
   ~
   ~ Copyright (c) 2020 Giorgos Neokleous
@@ -26,7 +25,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.giorgosneokleous.fullscreenintentexample">
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+
+    <uses-feature android:name="android.hardware.type.watch" />
 
     <application
         android:allowBackup="true"
@@ -36,7 +41,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:taskAffinity=".main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,15 +52,22 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".FullScreenActivity" />
+        <activity
+            android:name=".FullScreenActivity"
+            android:exported="true"
+            android:allowEmbedded="true"
+            android:taskAffinity="" />
 
-        <activity android:name=".LockScreenActivity"
-            android:showOnLockScreen="true"/>
+        <activity
+            android:name=".LockScreenActivity"
+            android:showOnLockScreen="true"
+            android:taskAffinity=".main" />
 
         <receiver
             android:name=".NotificationReceiver"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"
+            android:permission="android.permission.USE_FULL_SCREEN_INTENT" />
     </application>
 
 </manifest>

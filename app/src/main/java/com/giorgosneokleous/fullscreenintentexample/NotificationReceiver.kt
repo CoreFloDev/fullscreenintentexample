@@ -31,6 +31,7 @@ import android.content.Intent
 class NotificationReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
+        println("coucou received ${intent.getBooleanExtra(LOCK_SCREEN_KEY, true)}")
         if(intent.getBooleanExtra(LOCK_SCREEN_KEY, true)) {
             context.showNotificationWithFullScreenIntent(true)
         } else {

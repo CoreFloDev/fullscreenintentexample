@@ -27,25 +27,28 @@ package com.giorgosneokleous.fullscreenintentexample
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
-import java.util.concurrent.TimeUnit
+import android.os.Build
+import kotlin.time.Duration.Companion.seconds
 
 fun Context.scheduleNotification(isLockScreen: Boolean) {
     val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-    val timeInMillis = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(SCHEDULE_TIME)
+    val timeInMillis = System.currentTimeMillis() + 5.seconds.inWholeMilliseconds
 
     with(alarmManager) {
-        setExact(AlarmManager.RTC_WAKEUP, timeInMillis, getReceiver(isLockScreen))
+        if (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) canScheduleExactAlarms() else true) {
+            println("coucou alarm setup")
+            setExact(AlarmManager.RTC_WAKEUP, timeInMillis, getReceiver(isLockScreen))
+        }
     }
 }
 
 private fun Context.getReceiver(isLockScreen: Boolean): PendingIntent {
     // for demo purposes no request code and no flags
+    println("coucou recevied")
     return PendingIntent.getBroadcast(
         this,
         0,
         NotificationReceiver.build(this, isLockScreen),
-        0
+        PendingIntent.FLAG_IMMUTABLE
     )
 }
-
-private const val SCHEDULE_TIME = 5L

@@ -39,22 +39,23 @@ fun Context.showNotificationWithFullScreenIntent(
     description: String = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
 
 ) {
-    val builder = NotificationCompat.Builder(this, channelId)
+    val notification = NotificationCompat.Builder(this, channelId)
         .setSmallIcon(android.R.drawable.arrow_up_float)
-        .setContentTitle(title)
-        .setContentText(description)
+//        .setContentTitle(title)
+//        .setContentText(description)
         .setPriority(NotificationCompat.PRIORITY_HIGH)
+        .setCategory(NotificationCompat.CATEGORY_WORKOUT)
+        .setLocalOnly(true)
         .setFullScreenIntent(getFullScreenIntent(isLockScreen), true)
-
+        .build()
 
     val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     with(notificationManager) {
         buildChannel()
 
-        val notification = builder.build()
-
-        notify(0, notification)
+        println("coucou notify")
+        notify(42, notification)
     }
 }
 
@@ -72,14 +73,11 @@ private fun NotificationManager.buildChannel() {
 }
 
 private fun Context.getFullScreenIntent(isLockScreen: Boolean): PendingIntent {
-    val destination = if (isLockScreen)
-        LockScreenActivity::class.java
-    else
-        FullScreenActivity::class.java
+    val destination = if (isLockScreen) LockScreenActivity::class.java else FullScreenActivity::class.java
     val intent = Intent(this, destination)
 
     // flags and request code are 0 for the purpose of demonstration
-    return PendingIntent.getActivity(this, 0, intent, 0)
+    return PendingIntent.getActivity(this, 100, intent, PendingIntent.FLAG_IMMUTABLE)
 }
 
 private const val CHANNEL_ID = "channelId"

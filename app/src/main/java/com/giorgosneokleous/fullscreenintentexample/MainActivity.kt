@@ -24,9 +24,13 @@
 
 package com.giorgosneokleous.fullscreenintentexample
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +48,15 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.showFullScreenIntentLockScreenWithDelayButton).setOnClickListener {
             scheduleNotification(true)
         }
+
+//        if (!Settings.canDrawOverlays(this)) {
+//            // ask for setting
+//            val intent = Intent(
+//                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+//                Uri.parse("package:$packageName")
+//            )
+//            startActivityForResult(intent, 7425)
+//        }
     }
 }
 
